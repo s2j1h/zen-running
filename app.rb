@@ -7,4 +7,5 @@ end
  
 # Quick test
 get '/' do
-	"Hello from the ratpac
+	"Hello from the ratpack"
+end

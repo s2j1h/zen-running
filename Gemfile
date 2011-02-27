@@ -1,2 +1,3 @@
+source :gemcutter
 gem 'sinatra'
-gem 'newrelic_rpm version'
+gem 'newrelic_rpm'

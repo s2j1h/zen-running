@@ -1,0 +1,389 @@
+/* --- STYLES DE BASE --- */ 
+ 
+/* Page */ 
+html { 
+  font-size: 100%; /* Évite un bug d'IE 6-7. (1) */ 
+} 
+body { 
+  margin: 0; 
+  padding: 0; /* Remettre à zéro si nécessaire. */ 
+  /* Pensez à utiliser une collection de polices (2), par ex: */
+  font-family: Arial, Helvetica, FreeSans, sans-serif;
+  font-size: .8em; /* À adapter pour la police choisie. (3) */ 
+  line-height: 1.4; /* À adapter au design. (4) */ 
+  color: black; 
+  background: white; 
+} 
+ 
+/* Titres */ 
+h2, h3, h4, h5, h6 { 
+  margin: 1em 0 .5em 0; /* Rapproche le titre du texte. (5) */ 
+  line-height: 1.2; 
+  font-weight: bold; /* Valeur par défaut. (6) */ 
+  font-style: normal; 
+} 
+
+h1 a,h1 a:link,h1 a:visited, h1 a:hover,h1 a:focus {
+  margin: 0em;
+  padding: 0em;
+  line-height: 1.0;
+  font-size: 1.6em;
+  text-decoration:none;
+  border: 0;
+}
+
+h2 a {
+  font-size: 0.6em;
+  font-weight: normal; 
+}
+
+h2 { 
+  font-size: 1.6em; 
+} 
+h3 { 
+  font-size: 1.25em; 
+} 
+h4 { 
+  font-size: 1em; 
+} 
+ 
+/* Listes */ 
+ul, ol { 
+  margin: .75em 0 .75em 32px; 
+  padding: 0; 
+} 
+ 
+/* Paragraphes */ 
+p { 
+  margin: .75em 0; /* Marges plus faibles que par défaut. (7) */ 
+} 
+ 
+/* Liens */ 
+ h2 a:link,p a:link {
+	color:#18b1c3;
+	text-decoration:none;
+	border-bottom:1px dotted #18b1c3;
+	}	
+h2 a:visited,p a:visited {
+	color:#18b1c3;
+	border-bottom:none;
+	text-decoration:none;
+	}		
+h2 a:hover,p a:hover,
+h2 a:focus,p a:focus {
+	color:#fff;
+	background-color: #18b1c3;
+  border:1px dotted #18b1c3;
+	text-decoration:none;
+	}
+
+ 
+/* Pas de bordure autour des images dans les liens */ 
+p a img { 
+  border: none; 
+} 
+ 
+/* Divers éléments de type en-ligne (8) */ 
+em { 
+  font-style: italic; 
+} 
+strong { 
+  font-weight: bold; 
+} 
+
+/* header */
+
+#header {
+ 	height: 60px;
+	margin: 0 auto;
+	padding: 0px 0 15px 0;
+	background: #519600;
+	border-bottom: 10px solid #B5F36D;
+	font-family: 'Pacifico',Arial, Helvetica, sans-serif;
+}
+
+#wrapHeader {
+ margin: auto;
+ width: 760px;
+
+}
+
+#logo {
+	float: left;
+	width: 30%;
+}
+
+#logo h1 {
+  font-family: 'Pacifico';
+	margin: 0 auto;
+  width:800px;
+	line-height: normal;
+	font-size: 40px;
+	color: #FFFFFF;
+}
+
+#logo a {
+	color: #FFFFFF;
+}
+
+/* Menu */
+#menu {
+	float: right;
+	height: 60px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#menu ul {
+  text-align: right;
+	margin: 0;
+	padding: 40px 0px 0px 0px;
+	list-style: none;
+	line-height: normal;
+}
+
+#menu li {
+	float: left;
+}
+
+#menu a {
+	display: block;
+	margin-right: 1px;
+	padding: 10px 15px 15px 15px;
+	text-decoration: none;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #FFFFFF;
+	border: none;
+}
+
+#menu a:hover, #menu .current_page_item a {
+	background: #B5F36D;
+	text-decoration: none;
+}
+
+#menu .current_page_item a {
+}
+
+
+
+
+/* Footer */
+
+#footer {
+  clear:both;
+	height: 25px;
+  margin-top: 20px;
+	padding: 0px 0 15px 0;
+	background: #519600;
+	border-top: 5px solid #B5F36D;
+	font-family: 'Ubuntu',Arial, Helvetica, sans-serif;
+}
+
+#footer p {
+	margin: 0;
+	padding-top: 10px;
+	line-height: normal;
+	font-size: 10px;
+	text-transform: uppercase;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+#footer a {
+	color: #FFFFFF;
+}
+
+#content {
+  margin: 0 auto;
+  padding-bottom: 10px;
+  width:700px;
+}
+
+#content p {
+  font-size: 16px;
+  font-family: Arial;
+}
+
+#flash_notice, #flash_error {
+  width: 700px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 10px;
+  padding: 5px;
+  font-size:1.2em;
+}
+
+#flash_notice {
+  background-color: #7CE700;
+  border: 2px solid  #71AD2B;
+}
+
+#flash_error  {
+  background-color: #FF7373;
+  border: 2px solid #A60000;
+}
+
+#wrap, #wrapNav {
+  width:700px;
+  margin:0 auto;
+  background:#fff;
+  position: relative;
+}
+
+#wrapNav {
+  margin: 0 auto;
+  width:600px;
+  padding-top: 5px;
+  background:#fff;
+
+}
+
+.img-box {
+  border:6px solid #f4f4f4;
+  display: block; 
+  margin-left: auto;   margin-right: auto;
+}
+
+.column {
+  width:200px;
+  margin: 0 0 20px 0;
+  padding: 0;
+  position: relative;
+  display: inline-block;
+}
+
+.column p {
+  margin: 0;
+  padding; 0;
+  text-align: center;
+}
+
+#nav {
+  float: right;
+}
+
+
+/*
+    awesome buttons are based on a blog post by ZERB
+    Read there blog post for more information:
+    "Super awesome Buttons with CSS3 and RGBA":http://www.zurb.com/article/266/super-awesome-buttons-with-css3-and-rgba
+
+    this buttons are even more awesome, as the need only one color for all three states,
+    and have an super awesome onclick state
+*/
+
+/* set an awesome color for the buttons, feel free to add new colors like an .awesome.green or .awesome.secondary */
+.awesome {
+  background-color: #111 !important;
+  color: #fff !important;
+}
+
+/* the awesome size gets set here. Feel free to add new sizes, like .awesome.small or .small.large */
+.awesome { padding: 5px 10px 6px !important; font-size: 13px !important; }
+.awesome:active { padding: 6px 10px 5px !important; }
+
+/* Touch the rest at your onw risk. */
+.awesome {
+  border: 0 !important;
+  cursor: pointer !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  font: inherit !important;
+  line-height: 1 !important;
+  position: relative !important;
+  text-align: center !important;
+  text-decoration: none !important;
+
+  /* vertical margin is the opposite of button's awesomeness */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  /* not all browser support these, but who cares? */
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.25), -2px 0 1px rgba(0,0,0,0.25) !important;
+
+          border-radius: 5px !important;
+     -moz-border-radius: 5px !important;
+  -webkit-border-radius: 5px !important;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+
+  /* who needs images these days? */
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0)) !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,.2)), color-stop(0.5, rgba(150,150,150,.2)), to(rgba(0,0,0,.0))) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#30ffffff,endColorstr=#10000000) progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=135,strength=2);
+
+  /* cross browser inline block hack
+     see http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/ */
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle !important;
+  *display: inline !important;
+  position: relative;
+
+  /* IE luv */
+  zoom: 1;
+
+  /* disable text selection (Firefox only) */
+  -moz-user-select: none;
+}
+
+/* OPERA only
+   if there is no border set, Opera shows a transparent background-color if border-radius is set. */
+@media all and (-webkit-min-device-pixel-ratio:10000),not all and (-webkit-min-device-pixel-ratio:0) {
+  input.awesome {
+    border: 1px solid RGBa(0,0,0,0) !important;
+  }
+}
+
+/* hide selection background color */
+.awesome::selection {
+  background: transparent;
+}
+
+.awesome {
+  outline: 0; /* remove dotted line, works for links only */
+}
+.awesome::-moz-focus-inner {
+  border: none; /* remove dotted lines for buttons */
+}
+.awesome:focus,
+.awesome:hover {
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,.4), rgba(150,150,150,.3), rgba(0,0,0,.0)) !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,.4)), color-stop(0.5, rgba(150,150,150,.3)), to(rgba(0,0,0,.0))) !important;
+  #filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50ffffff,endColorstr=#20000000) progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=135,strength=2);
+}
+.awesome:active {
+  background-image: -moz-linear-gradient(top, rgba(0,0,0,.2), rgba(150,150,150,.2), rgba(255,255,255,.2)) !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.2)), color-stop(0.5, rgba(150,150,150,.2)), to(rgba(255,255,255,.2))) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#20000000,endColorstr=#50ffffff) progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=315,strength=1);
+
+          box-shadow: inset 0 1px 2px rgba(0,0,0,0.7) !important;
+     -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.7) !important;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.7) !important;
+}
+
+/* Safari doesn't support inset box shadow, so we better remove it */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+  .awesome:active {
+    -webkit-box-shadow: none;
+  }
+}
+
+
+.INforward {
+  position: relative;
+  display: inline-block;
+  float: right;
+}
+
+.INrewind {
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+

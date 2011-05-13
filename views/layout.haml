@@ -1,0 +1,44 @@
+!!! 5
+%html( lang="en" )
+  %head
+    %meta( charset="utf-8" )
+    %title Zen-Runnin'
+    %link( href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" )
+    %link( href="/stylesheets/base.css" media="screen" rel="stylesheet" type="text/css" )
+    %script( type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" )
+    %script( type="text/javascript" src="/javascripts/application.js" )
+  %body
+
+    #header
+      #wrapHeader
+        #logo
+          %h1 
+            %a(href='/')Zen-Runnin'
+        #menu
+          %ul
+            - if logged_in?
+              %li 
+                %a(href="")Mes courses
+              %li 
+                %a(href="")Mes amis
+              %li 
+                %a(href='/logout')Déconnexion
+            - else
+              %li 
+                %a{:href => oauth.url_for_oauth_code(:permissions => [:user_likes, :friends_likes]) }Connexion
+           
+    
+
+
+    #content
+      - if flash.has? :notice
+        #flash_notice= flash[:notice]
+      - if flash.has? :error
+        #flash_error= flash[:error]
+      = yield
+
+    #footer
+      %p
+        Zen-Running' est forgé par 
+        %a(href='http://labs.zeneffy.fr')Zeneffy Labs.
+        Copyright &copy;2011 J.Raigneau. All rights reserved.

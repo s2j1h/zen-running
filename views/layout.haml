@@ -2,7 +2,7 @@
 %html( lang="en" )
   %head
     %meta( charset="utf-8" )
-    %title Zen-Runnin'
+    %title ZenRunnin'
     %link( href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" )
     %link( href="/stylesheets/base.css" media="screen" rel="stylesheet" type="text/css" )
     %script( type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" )
@@ -13,14 +13,14 @@
       #wrapHeader
         #logo
           %h1 
-            %a(href='/')Zen-Runnin'
+            %a(href='/')ZenRunnin'
         #menu
           %ul
             - if logged_in?
               %li 
-                %a(href="")Mes courses
+                %a(href="/")Mes courses
               %li 
-                %a(href="")Mes amis
+                %a(href="/friends")Mes amis
               %li 
                 %a(href='/logout')Déconnexion
             - else
@@ -39,6 +39,21 @@
 
     #footer
       %p
-        Zen-Running' est forgé par 
+        ZenRunning' est forgé par 
         %a(href='http://labs.zeneffy.fr')Zeneffy Labs.
-        Copyright &copy;2011 J.Raigneau. All rights reserved.
+        Copyright &copy;2011 J.Raigneau. All rights reserved.i
+
+    #fb-root
+:javascript
+  window.fbAsyncInit = function() {
+    FB.init({appId: 'your app id', status: true, cookie: true,xfbml: true});
+    FB.Canvas.setSize();
+    };
+    
+    (function() {
+      var e = document.createElement('script'); e.async = true;
+      e.src = document.location.protocol +'//connect.facebook.net/en_US/all.js';
+      document.getElementById('fb-root').appendChild(e);
+    }()
+    );
+    

@@ -1,0 +1,38 @@
+h1. ZenRunnin'
+
+Zenrunnin' est une application de suivi de performances de vos courses à pied, utilisant votre compte facebook pour partager avec vos amis
+
+h2. Introduction
+
+Zenrunnin' est une application simple de suivi de vos courses, utilisant votre compte facebook pour partager vos performances avec vos amis et connaître les leurs.
+
+Le site Zenrunnin' est à la base un petit projet pour jouer avec les API facebook et mieux les connaître - il n'a pas vocation à devenir payant et reste sans garantie
+
+h2. Code
+
+Le dépôt de code est hébergé sur "GitHub":http://github.com/jraigneau/zen-running
+
+h2. License
+
+ZenRunnin' est sous "license apache v2.0":http://www.apache.org/licenses/LICENSE-2.0
+
+   Copyright 2011 Julien Raigneau
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+h2. Avertissement
+
+Le code est sans garantie et sans (trop) de support!
+
+
+

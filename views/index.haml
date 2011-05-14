@@ -1,6 +1,11 @@
 - if logged_in?
 
-  %h1 Vos dernières courses
+  #title
+    %span#title-p Vos dernières courses
+    %a{:href=>'/run/add',:class=>'awesome'}Nouvelle course
+    %a{:href=>'/run/stats',:class=>'awesome'}Mes stats
+
+
 
   - if @friends.any?
     %ul#friends
@@ -13,9 +18,9 @@
 
 
 - else
-  %h1 A propos
+  %h2 A propos
   %p
-    Zen-runnin' est une application simple de suivi de vos courses, utilisant votre compte facebook pour partager vos performances avec vos amis et connaître les leurs.
+    Zenrunnin' est une application simple de suivi de vos courses, utilisant votre compte facebook pour partager vos performances avec vos amis et connaître les leurs.
   %p
-    Le site Zen-runnin' est à la base un petit projet pour jouer avec les API facebook et mieux les connaître - il n'a pas vocation à devenir payant et reste sans garantie
+    Le site Zenrunnin' est à la base un petit projet pour jouer avec les API facebook et mieux les connaître - il n'a pas vocation à devenir payant et reste sans garantie
  

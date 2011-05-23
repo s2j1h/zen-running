@@ -1,10 +1,10 @@
-	#contactform {
-	
+#niceform {
+	font-family: 'Quattrocento Sans',Arial, Verdana; 
 	width: 500px;
 	padding: 20px;
 	background: #f0f0f0;
 	overflow:auto;
-	
+	margin: 0 auto;
 	border: 1px solid #cccccc;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
@@ -15,11 +15,15 @@
 	box-shadow: 2px 2px 2px #cccccc;
 	
 	}
+
+  #niceform a{
+
+  }
 	
 	.field{margin-bottom:7px;}
 	
 	label {
-	font-family: Arial, Verdana; 
+	font-family: 'Quattrocento Sans',Arial, Verdana; 
 	text-shadow: 2px 2px 2px #ccc;
 	display: block; 
 	float: left; 
@@ -28,24 +32,46 @@
 	text-align: right; 
 	width: 120px; 
 	line-height: 25px; 
-	font-size: 15px; 
+	font-size: 16px; 
 	}
 	
 	.input{
-	font-family: Arial, Verdana; 
-	font-size: 15px; 
-	padding: 5px; 
-	border: 1px solid #b9bdc1; 
-	width: 300px; 
-	color: #797979;	
+	  font-family: 'Quattrocento Sans',Arial, Verdana; 
+    font-weight: bold; 
+	  font-size: 15px; 
+	  padding: 5px; 
+	  border: 1px solid #b9bdc1; 
+	  width: 300px; 
+	  color: #797979;	
 	}
+
+  .inputSmall{
+    font-family: 'Quattrocento Sans',Arial, Verdana; 
+    font-weight: bold; 
+	  font-size: 15px; 
+	  padding: 5px; 
+	  border: 1px solid #b9bdc1; 
+	  width: 40px; 
+	  color: #797979;	
+    text-align:center;
+
+  }
+
+  .inputSmallDate{
+    font-family: 'Quattrocento Sans',Arial, Verdana; 
+    font-weight: bold; 
+	  font-size: 15px; 
+	  padding: 5px; 
+	  border: 1px solid #b9bdc1; 
+	  width: 100px; 
+	  color: #797979;
+    text-align:center;
+
+  }
 	
-	.input:focus{
-	background-color:#aef2f7;
-	}
-	
-	.textarea {
-	height:150px;	
+	.inputSmall:focus .input:focus {
+	  background-color:#A9F16C;
+    border: 1px solid #519600;
 	}
 	
 	.hint{
@@ -63,6 +89,9 @@
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;	
+    font-family: 'Quattrocento Sans',Arial, Verdana; 
+	font-size: 10px; 
+
 	}
 	
 	.button{

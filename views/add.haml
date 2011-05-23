@@ -1,0 +1,47 @@
+#title
+  %span#title-p Ajouter une course
+
+%form{:action=>"/run/add",:method=>"post",:enctype=>"multipart/form-data", :id => "niceform", :class => "rounded" }
+
+  .field
+    %label(for="date")Date*:
+    %input{:type=>"text",:name=>"date",:id=>"date", :class=>"inputSmallDate", :maxlength=>"10"} &nbsp;&nbsp;&nbsp;
+    %span
+      %a{:href=>"#",:id=>"A_hier",:class => "awesome"}Hier
+    %span 
+      %a{:href=>"#",:id=>"A_aujourdhui",:class => "awesome"}Aujourd'hui
+    %p{:class=>"hint"}Entrez la date de la course au format jj/mm/aaaa (champ obligatoire)
+    
+  
+  .field
+    %label(for="image")Durée*:
+    %input{:type=>"text",:id=>"dureeH", :name=>"dureeH", :class=>"inputSmall", :maxlength=>"2"} &nbsp;heures&nbsp;
+    %input{:type=>"text",:id=>"dureeM", :name=>"dureeM", :class=>"inputSmall", :maxlength=>"2"} &nbsp;minutes&nbsp;
+    %input{:type=>"text",:id=>"dureeS", :name=>"dureeS", :class=>"inputSmall", :maxlength=>"2"} &nbsp;secondes
+
+
+    %p{:class=>"hint"}Entrez la durée de la course au format hh:mm:ss  (champ obligatoire)
+
+  .field
+    %label(for="distance")Distance:
+    %input{:type=>"text",:id=>"distance",:name=>"distance", :class=>"inputSmallDate"} &nbsp;km&nbsp;
+    %p{:class=>"hint"}Entrez la distance parcourue en km
+
+  .field
+    %label(for="commentaires")Commentaires:
+    %textarea{:id=>"commentaires",:name=>"commentaires", :class=>"input textarea", :maxlenght=>"200", :rows=>"4"}
+    %p{:class=>"hint"}Entrez un commentaire pour vous souvenir de cette course, comme le lieu, ce que vous avez ressenti ou vu
+
+
+  %input{:type=>"submit",:value=>"Ajouter", :class => "awesome button"}
+
+
+:javascript
+  $( "#A_hier" ).click(function() {
+    d = Date.today().add(-1).day();
+    $('#date').val(d.toString("dd/MM/yyyy"));
+  });
+  $( "#A_aujourdhui" ).click(function() {
+    d = Date.today();
+    $('#date').val((d.toString("dd/MM/yyyy")));
+  }); 

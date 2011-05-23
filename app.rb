@@ -6,9 +6,10 @@ require 'koala'
 require 'rack-flash'
 require 'sinatra/redirect_with_flash'
 require 'haml'
-
+require 'date'
 
 enable :sessions
+
 
 configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
@@ -20,22 +21,24 @@ configure :production do
 end
 
 set :root, File.dirname(__FILE__)
+set :views, "#{File.dirname(__FILE__)}/views"
+set :public, "#{File.dirname(__FILE__)}/public"
 set :sessions, true
-set :app_id, ENV['app_id'] # in dev mode: export app_id=xxx
-set :app_secret, ENV['app_secret'] # in dev mode: app_secret=xxx
-set :app_url, ENV['app_url'] ||  "http://localhost:4567"
-
+set :app_id, ENV['app_id'].to_s # in dev mode: export app_id=xxx
+set :app_secret, ENV['app_secret'].to_s # in dev mode: app_secret=xxx
+set :app_url, ENV['app_url'].to_s
+set :offset, 10
 
 use Rack::Flash, :sweep => true
 
 
-class Hommage
+class Run
   include DataMapper::Resource  
   property :id,                   Serial
   property :id_user,              String
-  property :date,                 String
-  property :duree,                String
-  property :distance,             String
+  property :date,                 Date
+  property :duree,                Float
+  property :distance,             Float
   property :commentaires,         Text
 end
 
@@ -71,8 +74,8 @@ helpers do
 
   def authorize!
     session.delete :facebook_access_token
-    flash[:error] = 'You devez être connecté pour accéder à cette page'
-    redirect '/'
+    redirect '/', :error =>  'Vous devez être connecté pour accéder à cette page'
+
   end
 
   def link_to text, url
@@ -80,15 +83,31 @@ helpers do
   end 
 end
 
-before '/shared_interests/*' do
+before '/run/*' do
   authorize! unless logged_in?
 end
 
 get '/' do
-  if logged_in?
-    @friends = facebook_graph(:get_object, 'me/friends')['data']
+  redirect '/pages/0'
+end
+
+get '/pages/:offset' do
+  if params[:offset] == ""
+    @offset = 0
+  else
+    @offset =  Integer(params[:offset])
   end
 
+  if logged_in?
+    id_user = facebook_graph(:get_object, 'me')['id']
+    @runs = Run.all(:id_user => id_user, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
+    if Run.count < (@offset+1)*settings.offset+1
+      @end = "True"
+    else
+      @end = "False"  
+    end
+
+  end
   haml :index
 end
 
@@ -96,14 +115,81 @@ post '/' do
   redirect '/'
 end
 
+get '/run/add' do
+  haml :add
+end
+
+post '/run/add' do
+   if params[:date] == "" || params[:dureeM] == "" || params[:dureeS] == ""
+    redirect '/run/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
+  end
+
+  date = params[:date]
+  dureeH = params[:dureeH]
+  dureeM = params[:dureeM]
+  dureeS = params[:dureeS]
+  distance = params[:distance]
+  commentaires = params[:commentaires]
+  puts date
+  puts dureeH,dureeM,dureeS,distance,commentaires
+  begin
+    if dureeH == "" 
+      dureeH = 0
+    else
+      dureeH = Integer(dureeH)
+    end
+    dureeM = Integer(dureeM)
+    dureeS = Integer(dureeS)
+    if dureeH<0 || dureeH> 24 || dureeM <0 || dureeM > 60 || dureeS <0 || dureeS > 60
+       redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
+       puts "DEBUG: erreur redirect duree pas dans les clous"
+    end
+    duree = 1*dureeH + dureeM/60.0 + dureeS/3600.0
+  rescue
+     redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
+  end
+  #parse distance
+  begin
+    if distance == "" 
+      distance = 0
+    else
+      distance = Float(distance)
+    end
+   if distance < 0
+     redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
+   end
+  rescue
+     redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
+  end
+    
+  #rajouter l'id facebook
+  id_user = facebook_graph(:get_object, 'me')['id']
+
+  run = Run.create(
+    :id_user => id_user,
+    :date => date, 
+    :duree => duree, 
+    :distance => distance, 
+    :commentaires => commentaires 
+  )
+  if run.save
+     redirect '/', :notice => "Une nouvelle course a été créée"
+  else
+    puts run.errors.inspect
+    redirect '/', :error => "Une erreur a empêché la sauvegarde de la course - merci de contacter votre admin préféré"
+  end
+
+end
+
+
 get '/oauth' do
   if params[:code]
     begin
       access_token = oauth.get_access_token(params[:code])
       session[:facebook_access_token] = access_token
-      flash[:notice] = "Vous êtes connecté sur Zen-runnin', Bienvenue !"
+      flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
     rescue Koala::Facebook::APIError
-      flash[:error] = "Désolé, nous ne pouvons vous connecter - merci de réessayer ultérieurement"
+      flash[:error] = "Désolé, nous ne pouvons vous connecter - merci de réessayer ultérieurement ou de contacter votre admin préféré si le problème persiste"
     end
   end
   redirect '/'
@@ -111,8 +197,8 @@ end
 
 get '/logout' do
   session.delete :facebook_access_token
-  flash[:notice] = 'Vous êtes déconnecté'
-  redirect '/'
+  redirect '/', :notice =>  'Vous êtes déconnecté'
+
 end
 
 post 'deauthorize' do

@@ -1,12 +1,15 @@
 !!! 5
 %html( lang="en" )
   %head
-    %meta( charset="utf-8" )
+    %meta( charset="utf-8")
     %title ZenRunnin'
     %link( href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" )
+    %link( href="http://fonts.googleapis.com/css?family=Quattrocento+Sans" rel="stylesheet" type="text/css" )
     %link( href="/stylesheets/base.css" media="screen" rel="stylesheet" type="text/css" )
+    %link( href="/stylesheets/form.css" media="screen" rel="stylesheet" type="text/css" )
     %script( type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" )
     %script( type="text/javascript" src="/javascripts/application.js" )
+    %script( type="text/javascript" src="/javascripts/date-fr-FR.js" )
   %body
 
     #header
@@ -46,7 +49,7 @@
     #fb-root
 :javascript
   window.fbAsyncInit = function() {
-    FB.init({appId: 'your app id', status: true, cookie: true,xfbml: true});
+    FB.init({appId: '822050aa6886db8e663cbb1f9b1c63d3', status: true, cookie: true,xfbml: true});
     FB.Canvas.setSize();
     };
     

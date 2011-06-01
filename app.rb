@@ -142,7 +142,7 @@ get '/pages/:offset' do
   if logged_in?
     id_user = facebook_graph(:get_object, 'me')['id']
     @runs = Run.all(:id_user => id_user, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
-    if Run.count < (@offset+1)*settings.offset+1
+    if Run.all(:id_user => id_user).count < (@offset+1)*settings.offset+1
       @end = "True"
     else
       @end = "False"  
@@ -168,14 +168,21 @@ get '/friends/pages/:offset' do
   end
 
   if logged_in?
-    @friends = facebook_graph(:get_object, 'me/friends')['data']
-    puts @friends
+    friendsFF = facebook_graph(:get_object, 'me/friends')['data']
     listFriends = []
-    @friends.each do |friend|
+    @friendsName = {}
+    friendsFF.each do |friend|
       listFriends << friend['id']
+      @friendsName[friend['id']] = friend["name"]
     end
     @runs = Run.all(:id_user => listFriends, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
-    if  Run.all(:id_user => listFriends).count < (@offset+1)*settings.offset+1
+    @friendsPic = {}
+    @runs.each do |run|
+      if @friendsPic[run.id_user] == nil
+        @friendsPic[run.id_user] = facebook_graph(:get_picture, run.id_user)
+      end
+    end
+    if Run.all(:id_user => listFriends).count < (@offset+1)*settings.offset+1
       @end = "True"
     else
       @end = "False"

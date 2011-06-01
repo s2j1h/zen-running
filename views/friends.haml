@@ -1,15 +1,16 @@
 - if logged_in?
 
   #title
-    %span#title-p Les dernières courses de vos amis
+    %span#title-p Les dernières courses de mes amis
 
   - if @runs.any?
     - @runs.each do |run|
       - dureeH,dureeM,dureeS = formatDuree(run.duree)
       #summary
-        .the_date
-          .date_m #{moisFR(run.date.month) }
-          .date_d #{run.date.day}
+        .the_friend
+          %img{:src=>"#{@friendsPic[run.id_user]}"}
+          %p{:style=>"font-size:0.8em;"}
+            = @friendsName[run.id_user]
         %table
           %thead
             %tr

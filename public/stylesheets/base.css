@@ -412,6 +412,13 @@ strong {
   float: left;
 }
 
+.the_friend {
+  text-align: center;
+  float:left;
+  font-family:  'Quattrocento Sans',Arial, Helvetica, sans-serif;
+  width:80px;
+
+}
 
 .the_date {
   display:block;
@@ -442,7 +449,7 @@ strong {
 
 #summary {
   margin-bottom: 10px;
-
+  padding-bottom: 10px;
 }
 
 #summary table {

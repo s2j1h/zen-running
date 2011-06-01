@@ -27,7 +27,7 @@ set :sessions, true
 set :app_id, ENV['app_id'].to_s # in dev mode: export app_id=xxx
 set :app_secret, ENV['app_secret'].to_s # in dev mode: app_secret=xxx
 set :app_url, ENV['app_url'].to_s
-set :offset, 10
+set :offset, 4
 
 use Rack::Flash, :sweep => true
 
@@ -81,6 +81,47 @@ helpers do
   def link_to text, url
     "<a href='#{ URI.encode url }'>#{ text }</a>"
   end 
+
+  def moisFR id
+    mois = ["JAN","FEV","MARS","AVRIL","MAI","JUIN","JUIL","AOUT","SEPT","OCT","NOV","DEC"]
+    mois[id-1]
+  end
+
+  def formatKM km
+    if km == 0
+      return "-"
+    else
+      return km
+    end
+  end
+
+  def formatDuree duree
+    dureeH = duree.to_int
+    dureeM = ((duree-dureeH)*60).to_int
+    dureeS = ((((duree-dureeH)*60)-dureeM)*60).to_int
+    if dureeH < 10
+      dureeH = "0" << dureeH.to_s
+    else
+      dureeH = dureeH.to_s
+    end
+    if dureeM == 60
+      dureeM = "00"
+    elsif dureeM < 10
+      dureeM = "0" << dureeM.to_s
+    else
+      dureeM = dureeM.to_s
+    end
+    if dureeS == 60
+      dureeS = "00"
+    elsif dureeS < 10
+      dureeS = "0" << dureeS.to_s
+    else
+      dureeS = dureeS.to_s
+    end
+
+    return dureeH,dureeM,dureeS
+  end
+
 end
 
 before '/run/*' do
@@ -115,68 +156,106 @@ post '/' do
   redirect '/'
 end
 
+get '/friends' do
+  redirect '/friends/pages/0'
+end
+
+get '/friends/pages/:offset' do
+  if params[:offset] == ""
+    @offset = 0
+  else
+    @offset =  Integer(params[:offset])
+  end
+
+  if logged_in?
+    @friends = facebook_graph(:get_object, 'me/friends')['data']
+    puts @friends
+    listFriends = []
+    @friends.each do |friend|
+      listFriends << friend['id']
+    end
+    @runs = Run.all(:id_user => listFriends, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
+    if  Run.all(:id_user => listFriends).count < (@offset+1)*settings.offset+1
+      @end = "True"
+    else
+      @end = "False"
+    end
+    
+    haml :friends
+  else
+    redirect '/'
+  end
+
+end
+
 get '/run/add' do
-  haml :add
+  if logged_in?
+    haml :add
+  else
+    redirect '/'
+  end
 end
 
 post '/run/add' do
-   if params[:date] == "" || params[:dureeM] == "" || params[:dureeS] == ""
-    redirect '/run/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
-  end
+  if logged_in?
 
-  date = params[:date]
-  dureeH = params[:dureeH]
-  dureeM = params[:dureeM]
-  dureeS = params[:dureeS]
-  distance = params[:distance]
-  commentaires = params[:commentaires]
-  puts date
-  puts dureeH,dureeM,dureeS,distance,commentaires
-  begin
-    if dureeH == "" 
-      dureeH = 0
-    else
-      dureeH = Integer(dureeH)
+    if params[:date] == "" || params[:dureeM] == "" || params[:dureeS] == ""
+      redirect '/run/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
     end
-    dureeM = Integer(dureeM)
-    dureeS = Integer(dureeS)
-    if dureeH<0 || dureeH> 24 || dureeM <0 || dureeM > 60 || dureeS <0 || dureeS > 60
-       redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
-       puts "DEBUG: erreur redirect duree pas dans les clous"
+
+    date = params[:date]
+    dureeH = params[:dureeH]
+    dureeM = params[:dureeM]
+    dureeS = params[:dureeS]
+    distance = params[:distance]
+    commentaires = params[:commentaires]
+    begin
+      if dureeH == "" 
+        dureeH = 0
+      else
+        dureeH = Integer(dureeH)
+      end
+      dureeM = Integer(dureeM)
+      dureeS = Integer(dureeS)
+      if dureeH<0 || dureeH> 24 || dureeM <0 || dureeM >= 60 || dureeS <0 || dureeS >= 60
+        redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
+      end
+      duree = 1*dureeH + dureeM/60.0 + dureeS/3600.0
+    rescue
+      redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
     end
-    duree = 1*dureeH + dureeM/60.0 + dureeS/3600.0
-  rescue
-     redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
-  end
-  #parse distance
-  begin
-    if distance == "" 
-      distance = 0
-    else
-      distance = Float(distance)
+    #parse distance
+    begin
+      if distance == "" 
+        distance = 0
+      else
+        distance = Float(distance)
+      end
+      if distance < 0
+        redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
+      end
+    rescue
+      redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
     end
-   if distance < 0
-     redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
-   end
-  rescue
-     redirect '/run/add', :error =>  "Distance incorrecte, merci d'entrer une valeur en km, ex: 10.4"
-  end
     
-  #rajouter l'id facebook
-  id_user = facebook_graph(:get_object, 'me')['id']
+    #rajouter l'id facebook
+    id_user = facebook_graph(:get_object, 'me')['id']
 
-  run = Run.create(
-    :id_user => id_user,
-    :date => date, 
-    :duree => duree, 
-    :distance => distance, 
-    :commentaires => commentaires 
-  )
-  if run.save
-     redirect '/', :notice => "Une nouvelle course a été créée"
+    run = Run.create(
+      :id_user => id_user,
+      :date => date, 
+      :duree => duree, 
+      :distance => distance, 
+      :commentaires => commentaires 
+    )
+    if run.save
+       redirect '/', :notice => "Une nouvelle course a été créée"
+    else
+      puts run.errors.inspect
+      redirect '/', :error => "Une erreur a empêché la sauvegarde de la course - merci de contacter votre admin préféré"
+    end
   else
-    puts run.errors.inspect
-    redirect '/', :error => "Une erreur a empêché la sauvegarde de la course - merci de contacter votre admin préféré"
+    redirect '/'
   end
 
 end

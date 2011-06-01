@@ -8,6 +8,7 @@
     %link( href="/stylesheets/base.css" media="screen" rel="stylesheet" type="text/css" )
     %link( href="/stylesheets/form.css" media="screen" rel="stylesheet" type="text/css" )
     %script( type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" )
+    %script( type="text/javascript" src="/javascripts/qtip-1.0.0-rc3.js" )
     %script( type="text/javascript" src="/javascripts/application.js" )
     %script( type="text/javascript" src="/javascripts/date-fr-FR.js" )
   %body
@@ -15,20 +16,20 @@
     #header
       #wrapHeader
         #logo
-          %h1 
+          %h1
             %a(href='/')ZenRunnin'
         #menu
           %ul
             - if logged_in?
-              %li 
+              %li
                 %a(href="/")Mes courses
-              %li 
+              %li
                 %a(href="/friends")Mes amis
               %li 
                 %a(href='/logout')Déconnexion
             - else
-              %li 
-                %a{:href => oauth.url_for_oauth_code(:permissions => [:user_likes, :friends_likes]) }Connexion
+              %li
+                %a{:href => oauth.url_for_oauth_code(:permissions => [:publish_stream]) }Connexion
            
     
 
@@ -44,8 +45,7 @@
       %p
         ZenRunning' est forgé par 
         %a(href='http://labs.zeneffy.fr')Zeneffy Labs.
-        Copyright &copy;2011 J.Raigneau. All rights reserved.i
-
+        Copyright &copy;2011 J.Raigneau. Tous droits réservés. 
     #fb-root
 :javascript
   window.fbAsyncInit = function() {

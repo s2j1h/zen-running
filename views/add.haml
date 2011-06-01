@@ -29,9 +29,10 @@
 
   .field
     %label(for="commentaires")Commentaires:
-    %textarea{:id=>"commentaires",:name=>"commentaires", :class=>"input textarea", :maxlenght=>"200", :rows=>"4"}
+    %textarea{:id=>"commentaires",:name=>"commentaires", :class=>"input textarea", :maxlength=>"200", :rows=>"4"}
     %p{:class=>"hint"}Entrez un commentaire pour vous souvenir de cette course, comme le lieu, ce que vous avez ressenti ou vu
 
+  %p{:style => "font-size:0.9em"} N.B. En ajoutant cette course, un post reprenant ces informations sera automatiquement publié sur votre mur Facebook.
 
   %input{:type=>"submit",:value=>"Ajouter", :class => "awesome button"}
 

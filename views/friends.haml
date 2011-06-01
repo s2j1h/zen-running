@@ -1,11 +1,7 @@
 - if logged_in?
 
   #title
-    %span#title-p Vos dernières courses
-    %a{:href=>'/run/add',:class=>'awesome'}Nouvelle course
-    %a{:href=>'/run/stats',:class=>'awesome'}Mes stats
-
-
+    %span#title-p Les dernières courses de vos amis
 
   - if @runs.any?
     - @runs.each do |run|
@@ -43,24 +39,22 @@
       - if @end == "False"
         .pagination
           .INforward
-            %a{:href=>"/pages/#{(Integer(@offset)+1).to_s()}",:id=>'forward',:class=>'awesome'}
+            %a{:href=>"/friends/pages/#{(Integer(@offset)+1).to_s()}",:id=>'forward',:class=>'awesome'}
               Page Suivante
     - else
       .pagination
         - if @end == "False"
           .INforward
-            %a{:href=>"/pages/#{(Integer(@offset)+1).to_s()}",:id=>'forward',:class=>'awesome'}
+            %a{:href=>"/friends/pages/#{(Integer(@offset)+1).to_s()}",:id=>'forward',:class=>'awesome'}
               Page Suivante
         .INrewind
-          %a{:href=>"/pages/#{(Integer(@offset)-1).to_s()}",:id=>'rewind',:class=>'awesome'}
+          %a{:href=>"/friends/pages/#{(Integer(@offset)-1).to_s()}",:id=>'rewind',:class=>'awesome'}
             Page Précédente
 
 
   - else
     %p 
-      Vous n'avez aucune course enregistrée pour l'instant.
-      %a(href='/run/add')Souhaitez-vous en rajouter une ?
-
+      Aucun de vos amis n'utilise ZenRunnin' - pourquoi ne pas leur faire découvrir ?
 
 - else
   %h2 A propos
@@ -92,4 +86,5 @@
       });
    });
   });
+
 

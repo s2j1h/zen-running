@@ -5,11 +5,9 @@
     %a{:href=>'/run/add',:class=>'awesome'}Nouvelle course
     %a{:href=>'/run/stats',:class=>'awesome'}Mes stats
 
-
-
   - if @runs.any?
     - @runs.each do |run|
-      - dureeH,dureeM,dureeS = formatDuree(run.duree)
+      - dureeH,dureeM,dureeS = format_toDuree(run.duree)
       #summary
         .the_date
           .date_m #{moisFR(run.date.month) }
@@ -18,8 +16,8 @@
           %thead
             %tr
               %td{:width=>"33%"} Temps
-              %td{:width=>"27%"}  Distance
-              %td{:width=>"40%"}  Commentaires
+              %td{:width=>"27%"} Distance
+              %td{:width=>"40%"} Commentaires
           %tbody
             %td
               %span #{dureeH}
@@ -29,15 +27,13 @@
               %span #{dureeS}
               s
             %td
-              %span #{formatKM(run.distance)}
-              - if run.distance != 0 
+              %span #{format_toKM(run.distance)}
+              - if run.distance != 0
                 km
             %td
               #{run.commentaires[0..50]}
               - if run.commentaires != "" && run.commentaires.size > 50
                 %span{:class=>"tip",:tooltip=>"#{run.commentaires}"} [...]
-
-
 
     - if Integer(@offset) == 0
       - if @end == "False"
@@ -84,7 +80,7 @@
         name: 'cream',
         padding: '7px 13px',
         width: {
-          max: 250,
+          max: 300,
           min: 0
         },
         tip: true

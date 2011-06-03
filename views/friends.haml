@@ -5,12 +5,12 @@
 
   - if @runs.any?
     - @runs.each do |run|
-      - dureeH,dureeM,dureeS = formatDuree(run.duree)
+      - dureeH,dureeM,dureeS = format_toDuree(run.duree)
+      %span{:style=>"font-size:1.3em;"}
+        = format_to_niceDate(run.date) + ", " + @friendsName[run.id_user] + " " + get_funSentence(run.distance,Integer(dureeH),Integer(dureeM))
       #summary
         .the_friend
           %img{:src=>"#{@friendsPic[run.id_user]}"}
-          %p{:style=>"font-size:0.8em;"}
-            = @friendsName[run.id_user]
         %table
           %thead
             %tr
@@ -26,7 +26,7 @@
               %span #{dureeS}
               s
             %td
-              %span #{formatKM(run.distance)}
+              %span #{format_toKM(run.distance)}
               - if run.distance != 0 
                 km
             %td
@@ -79,7 +79,7 @@
         name: 'cream',
         padding: '7px 13px',
         width: {
-          max: 250,
+          max: 300,
           min: 0
         },
         tip: true

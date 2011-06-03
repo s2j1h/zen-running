@@ -27,7 +27,7 @@ set :sessions, true
 set :app_id, ENV['app_id'].to_s # in dev mode: export app_id=xxx
 set :app_secret, ENV['app_secret'].to_s # in dev mode: app_secret=xxx
 set :app_url, ENV['app_url'].to_s
-set :offset, 4
+set :offset, 6
 
 use Rack::Flash, :sweep => true
 
@@ -40,6 +40,7 @@ class Run
   property :duree,                Float
   property :distance,             Float
   property :commentaires,         Text
+  property :id_post,              String
 end
 
 
@@ -54,8 +55,9 @@ helpers do
     app_id         =  settings.app_id
     app_secret     =  settings.app_secret
     app_url        =  settings.app_url
-    
+
     callback_url = "#{ app_url }/oauth"
+    puts callback_url
     @oauth ||= Koala::Facebook::OAuth.new app_id, app_secret, callback_url
   end
 
@@ -87,7 +89,7 @@ helpers do
     mois[id-1]
   end
 
-  def formatKM km
+  def format_toKM km
     if km == 0
       return "-"
     else
@@ -95,7 +97,51 @@ helpers do
     end
   end
 
-  def formatDuree duree
+  def get_funSentence km, dureeH, dureeM
+    sentence_goodperf = [
+                "a couru de toutes ses forces",
+                "a tout donné",
+                "était dans une forme éblouissante",
+                "a sprinté et doublé tout le monde",
+                "est sur le chemin du marathon",
+                "est une bête de course!",
+                "pourra bientôt faire le semi-marathon de Paris"
+                ]
+    sentence_badperf = [
+                "était un peu fatigué(e)",
+                "a fait de son mieux",
+                "était en petite forme",
+                "s'est fait doublé(e) par tout les autres coureurs"
+                ]
+    sentence_normalperf = [
+                "a bien couru",
+                "a fait son petit bonhomme de chemin",
+                "est en progression permanente"
+                ]
+    if km>=20 || dureeH>0
+      return sentence_goodperf[rand(sentence_goodperf.size)]
+    elsif (km != 0 && km<2) || (dureeH == 0 && dureeM < 20)
+      return sentence_badperf[rand(sentence_badperf.size)]
+    else
+      return sentence_normalperf[rand(sentence_normalperf.size)]
+    end
+  end
+
+  def format_to_niceDate date
+    now = Date.today
+    puts now
+    puts date
+    mois = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"]
+    if date.day == now.day && date.month == now.month && date.year == now.year
+      return "Aujourd'hui"
+    elsif date == now - 1
+      return "Hier"
+    else
+      return "Le #{date.day} " + mois[date.month-1] +  " #{date.year}"
+    end
+  end
+
+  def format_toDuree duree
     dureeH = duree.to_int
     dureeM = ((duree-dureeH)*60).to_int
     dureeS = ((((duree-dureeH)*60)-dureeM)*60).to_int
@@ -142,14 +188,19 @@ get '/pages/:offset' do
   if logged_in?
     id_user = facebook_graph(:get_object, 'me')['id']
     @runs = Run.all(:id_user => id_user, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
+    puts "#{settings.offset} offst=#{@offset*settings.offset}"
+    @runs.each do |run|
+      puts "BEFORE: #{run.id} #{run.date} #{run.distance} comment= #{run.commentaires}"
+    end
     if Run.all(:id_user => id_user).count < (@offset+1)*settings.offset+1
       @end = "True"
     else
-      @end = "False"  
+      @end = "False"
     end
 
   end
   haml :index
+
 end
 
 post '/' do
@@ -187,7 +238,7 @@ get '/friends/pages/:offset' do
     else
       @end = "False"
     end
-    
+
     haml :friends
   else
     redirect '/'
@@ -206,7 +257,7 @@ end
 post '/run/add' do
   if logged_in?
 
-    if params[:date] == "" || params[:dureeM] == "" || params[:dureeS] == ""
+    if params[:date] == "" || params[:dureeM] == ""
       redirect '/run/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
     end
 
@@ -222,10 +273,18 @@ post '/run/add' do
       else
         dureeH = Integer(dureeH)
       end
+      if dureeS == ""
+        dureeS = 0
+      else
+        dureeS = Integer(dureeS)
+      end
       dureeM = Integer(dureeM)
       dureeS = Integer(dureeS)
       if dureeH<0 || dureeH> 24 || dureeM <0 || dureeM >= 60 || dureeS <0 || dureeS >= 60
         redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
+      end
+      if dureeH == 0 && dureeM == 0 && dureeS == 0
+        redirect '/run/add', :error =>  "Merci de rentrer une durée supérieure à 0"
       end
       duree = 1*dureeH + dureeM/60.0 + dureeS/3600.0
     rescue
@@ -247,18 +306,48 @@ post '/run/add' do
     
     #rajouter l'id facebook
     id_user = facebook_graph(:get_object, 'me')['id']
+    
+    #créer la phrase pour le post
+    duree_sentence = ""
+    if dureeH > 0
+      duree_sentence = "#{dureeH} heure"
+      if dureeH > 1
+         duree_sentence << "s"
+      end
+      if dureeM>0
+        duree_sentence << " et "
+      end
+    end
+    if dureeM>0
+      duree_sentence << "#{dureeM} minute"
+      if dureeM>1
+        duree_sentence << "s"
+      end
+    end
+    sentence = "a couru pendant #{duree_sentence}"
+    if distance > 0
+      sentence << " sur #{distance}km"
+    end
+    if commentaires != ""
+      sentence << ": #{commentaires}"
+    end
+    id_post = facebook_graph(:put_wall_post,sentence)['id']
+
 
     run = Run.create(
       :id_user => id_user,
       :date => date, 
       :duree => duree, 
       :distance => distance, 
-      :commentaires => commentaires 
+      :commentaires => commentaires,
+      :id_post => id_post
     )
     if run.save
-       redirect '/', :notice => "Une nouvelle course a été créée"
+      puts "sauvegarde OK"
+      redirect '/', :notice => "Une nouvelle course a été créée"
     else
       puts run.errors.inspect
+      facebook_graph(:delete_object, id_post)
       redirect '/', :error => "Une erreur a empêché la sauvegarde de la course - merci de contacter votre admin préféré"
     end
   else

@@ -1,0 +1,101 @@
+#title
+  %span#title-p Mes statistiques
+  - dureeH,dureeM,dureeS = format_toDuree(@runDuree.duree)
+    
+#summary
+  %table
+    %thead
+      %tr
+        %td{:width=>"33%"} Le meilleur temps
+        %td{:width=>"33%"} La plus grande distance
+        %td{:width=>"33%"} La vitesse la plus élevée
+    %tbody
+      %tr
+        %td
+          %span #{dureeH}
+          H
+          %span #{dureeM}
+          m
+          %span #{dureeS}
+          s
+        %td
+          %span 
+            - if @runDistance.distance > 0
+              #{format_toKM(@runDistance.distance)}
+          km
+        %td
+          %span 
+            -if @runVitesse.distance > 0
+              #{"%.2f" % (@runVitesse.distance/@runVitesse.duree)}
+          km/h
+      %tr
+        %td #{format_to_niceDate(@runDuree.date)}
+        %td 
+          - if @runDistance.distance > 0
+            #{format_to_niceDate(@runDistance.date)}
+        %td 
+          - if @runVitesse.distance > 0
+            #{format_to_niceDate(@runVitesse.date)}
+ 
+
+%h3 Durée de vos courses
+#placeholderDuree{:style=>"width:500px;height:200px"}
+  
+%h3 Distance de vos courses
+#placeholderDistance{:style=>"width:500px;height:200px"}
+
+%h3 Vitesse moyenne de vos courses
+#placeholderVitesse{:style=>"width:500px;height:200px"}
+
+
+:javascript
+  $(function () {
+    var duree = #{@runStatsDuree};
+    var distance = #{@runStatsDistance};
+    var vitesse = #{@runStatsVitesse};
+
+    $.plot($("#placeholderDuree"), 
+            [
+              { label: "duree",  data: duree}
+            ], 
+            { 
+              xaxis: { mode: "time", timeformat: "%0d/%0m/%y", minTickSize: [1, "day"] },
+              yaxis: { ticks: 1, min: 0 },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
+              series: {lines: { show: true},points: { show: true }},
+              colors: ["#FF0000"]
+            }
+
+    );
+    $.plot($("#placeholderDistance"), 
+            [
+              { label: "distance",  data: distance}
+            ], 
+            { 
+              xaxis: { mode: "time", timeformat: "%0d/%0m/%y", minTickSize: [1, "day"] },
+              yaxis: { ticks: 1, min: 0 },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
+              series: {lines: { show: true },points: { show: true }},
+              colors: ["#009999"]
+
+            }
+
+    );
+    $.plot($("#placeholderVitesse"), 
+            [
+              { label: "vitesse",  data: vitesse}
+            ], 
+            { 
+              xaxis: { mode: "time", timeformat: "%0d/%0m/%y", minTickSize: [1, "day"] },
+              yaxis: { ticks: 1, min: 0 },
+              grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
+              series: {lines: { show: true },points: { show: true }},
+              colors: ["#9FEE00"]
+
+            }
+
+    );
+
+
+  });
+

@@ -174,6 +174,11 @@ before '/run/*' do
   authorize! unless logged_in?
 end
 
+before '/friends/*' do
+  authorize! unless logged_in?
+end
+
+
 get '/' do
   redirect '/pages/0'
 end
@@ -205,6 +210,34 @@ end
 
 post '/' do
   redirect '/'
+end
+
+get '/run/stats' do
+  if logged_in?
+    id_user = facebook_graph(:get_object, 'me')['id']
+    runs = Run.all(:id_user => id_user,:order => [ :date.asc])
+    run_first = Run.first(:id_user => id_user)
+    @runDuree,@runDistance,@runVitesse = run_first, run_first, run_first
+    @runStatsDistance,@runStatsDuree,@runStatsVitesse   = [], [],[]
+    runs.each do |run|
+      if run.duree > @runDuree.duree
+        @runDuree = run
+      end
+      if run.distance > @runDistance.distance
+        @runDistance = run
+      end
+      if run.distance/run.duree > @runVitesse.distance/@runVitesse.duree
+        @runVitesse = run
+      end
+    @runStatsDistance << [run.date.strftime("%s").to_i*1000,run.distance]
+    @runStatsDuree << [run.date.strftime("%s").to_i*1000,run.duree]
+    @runStatsVitesse << [run.date.strftime("%s").to_i*1000,run.distance/run.duree]
+    end
+    haml :stats
+  else
+    redirect '/'
+  end
+
 end
 
 get '/friends' do

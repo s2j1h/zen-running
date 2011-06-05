@@ -3,7 +3,8 @@
   #title
     %span#title-p Mes dernières courses
     %a{:href=>'/run/add',:class=>'awesome'}Nouvelle course
-    %a{:href=>'/run/stats',:class=>'awesome'}Mes stats
+    - if @runs.any?
+      %a{:href=>'/run/stats',:class=>'awesome'}Mes stats
 
   - if @runs.any?
     - @runs.each do |run|

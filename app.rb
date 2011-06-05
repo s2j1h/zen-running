@@ -29,7 +29,7 @@ set :app_secret, ENV['app_secret'].to_s # in dev mode: app_secret=xxx
 set :app_url, ENV['app_url'].to_s
 set :offset, 6
 
-use Rack::Flash, :sweep => true
+use Rack::Flash, :sweep => false
 
 
 class Run
@@ -397,6 +397,7 @@ get '/oauth' do
       session[:facebook_access_token] = access_token
       flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
     rescue Koala::Facebook::APIError
+      puts "ERROR/JR: impossible de se connecter à facebook"
       flash[:error] = "Désolé, nous ne pouvons vous connecter - merci de réessayer ultérieurement ou de contacter votre admin préféré si le problème persiste"
     end
   end

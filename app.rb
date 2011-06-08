@@ -57,8 +57,7 @@ helpers do
     app_url        =  settings.app_url
 
     callback_url = "#{ app_url }/oauth"
-    puts callback_url
-    @oauth ||= Koala::Facebook::OAuth.new app_id, app_secret, callback_url, :ca_file=>"/usr/lib/ssl/certs/ca-certificates.crt"
+    @oauth ||= Koala::Facebook::OAuth.new app_id, app_secret, callback_url
   end
 
   def logged_in?
@@ -396,6 +395,7 @@ get '/oauth' do
       access_token = oauth.get_access_token(params[:code])
       session[:facebook_access_token] = access_token
       flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
+      puts "OK/JR: I'm IN"
     rescue Koala::Facebook::APIError
       puts "ERROR/JR: impossible de se connecter à facebook"
       flash[:error] = "Désolé, nous ne pouvons vous connecter - merci de réessayer ultérieurement ou de contacter votre admin préféré si le problème persiste"

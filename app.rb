@@ -58,7 +58,7 @@ helpers do
 
     callback_url = "#{ app_url }/oauth"
     puts callback_url
-    @oauth ||= Koala::Facebook::OAuth.new app_id, app_secret, callback_url
+    @oauth ||= Koala::Facebook::OAuth.new app_id, app_secret, callback_url, :ca_file=>"/usr/lib/ssl/certs/ca-certificates.crt"
   end
 
   def logged_in?

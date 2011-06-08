@@ -1,6 +1,6 @@
 source :gemcutter
 gem 'sinatra', '1.2.6'
-gem 'koala' , '~> 1.1rc'
+gem 'koala' , '~> 1.1rc2'
 gem 'haml', '3.1.1'
 gem 'rack-flash', '0.1.1'
 gem 'sinatra-redirect-with-flash', '0.1.2'

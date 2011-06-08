@@ -396,8 +396,8 @@ get '/oauth' do
       session[:facebook_access_token] = access_token
       flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
       puts "OK/JR: I'm IN"
-    rescue Koala::Facebook::APIError
-      puts "ERROR/JR: impossible de se connecter à facebook"
+    rescue Koala::Facebook::APIError => bang
+      puts "ERROR/JR: impossible de se connecter à facebook: #{bang}"
       flash[:error] = "Désolé, nous ne pouvons vous connecter - merci de réessayer ultérieurement ou de contacter votre admin préféré si le problème persiste"
     end
   end

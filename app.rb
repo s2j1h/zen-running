@@ -392,7 +392,7 @@ end
 get '/oauth' do
   if params[:code]
     begin
-      access_token = oauth.get_access_token(params[:code], :ca_file => "/usr/lib/ssl/certs/ca-certificates.crt")
+      access_token = oauth.get_access_token(params[:code], {:ca_file => "/usr/lib/ssl/certs/ca-certificates.crt"})
       session[:facebook_access_token] = access_token
       flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
       puts "OK/JR: I'm IN"

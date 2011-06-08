@@ -391,6 +391,7 @@ end
 
 get '/oauth' do
   if params[:code]
+    puts [:code]
     begin
       access_token = oauth.get_access_token(params[:code], {:ca_file => "/usr/lib/ssl/certs/ca-certificates.crt"})
       session[:facebook_access_token] = access_token

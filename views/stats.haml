@@ -2,8 +2,8 @@
   %span#title-p Mes statistiques
   - dureeH,dureeM,dureeS = format_toDuree(@runDuree.duree)
     
-#summary
-  %table
+.summary
+  %table{:class=>"big"}
     %thead
       %tr
         %td{:width=>"33%"} Le meilleur temps
@@ -48,11 +48,23 @@
 #placeholderVitesse{:style=>"width:690px;height:200px"}
 
 
+- if @runDuree.duree < 1
+  = ticksGraph = [[0, "0"], [0.25, "15min"],  [0.5, "30min"],  [0.75, "45min"], [1, "1H"] ]
+- elsif @runDuree.duree < 2
+  = ticksGraph = [[0, "0"], [0.5, "30min"], [1, "1H"], [1.5, "1H30"], [2, "2H"] ]
+- elsif @runDuree.duree < 3
+  = ticksGraph = [[0, "0"], [0.5, "30min"], [1, "1H"], [1.5, "1H30"], [2, "2H"], [2.5, "2H30"], [3, "3H"]  ]
+- else @runDuree.duree < 3
+  = ticksGraph = [[0, "0"], [0.5, "30min"], [1, "1H"], [1.5, "1H30"], [2, "2H"], [2.5, "2H30"], [3, "3H"], [3.5, "3H30"], [4, "4H"]  ]
+
+
+
 :javascript
   $(function () {
     var duree = #{@runStatsDuree};
     var distance = #{@runStatsDistance};
     var vitesse = #{@runStatsVitesse};
+    var ticks = #{ticksGraph}
 
     $.plot($("#placeholderDuree"), 
             [
@@ -60,7 +72,7 @@
             ], 
             { 
               xaxis: { mode: "time", timeformat: "%0d/%0m/%y", minTickSize: [1, "day"] },
-              yaxis: { ticks: 1, min: 0 },
+              yaxis: { ticks: ticks,  min: 0 },
               grid: {backgroundColor: { colors: ["#fff", "#eee"] }},
               series: {lines: { show: true},points: { show: true }},
               colors: ["#FF0000"]

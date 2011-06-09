@@ -18,7 +18,10 @@
             %tr
               %td{:width=>"33%"} Temps
               %td{:width=>"27%"} Distance
-              %td{:width=>"40%"} Commentaires
+              %td{:width=>"37%"} Commentaires
+              %td{:width=>"3%"} 
+                %span{:style=>"font-size:1.6em;font-weight:bold",:id=>run.id} 
+                  %a{:href=>"/run/delete/#{run.id}"} &#215;
           %tbody
             %td
               %span #{dureeH}

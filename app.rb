@@ -289,7 +289,7 @@ end
 post '/run/add' do
   if logged_in?
 
-    if params[:date] == "" || params[:dureeM] == ""
+    if params[:date] == "" || ( params[:dureeM] == "" && params[:dureeH] == ""  && params[:dureeS] == "" )
       redirect '/run/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
     end
 
@@ -299,19 +299,29 @@ post '/run/add' do
     dureeS = params[:dureeS]
     distance = params[:distance]
     commentaires = params[:commentaires]
+    #date
+    begin
+      date = Date.parse(date)
+    rescue
+      redirect '/run/add', :error =>  "Date incorrecte, merci de respecter le format jj/mm/aaaa"
+    end
     begin
       if dureeH == "" 
         dureeH = 0
       else
         dureeH = Integer(dureeH)
       end
+      if dureeM == "" 
+        dureeM = 0
+      else
+        dureeM = Integer(dureeM)
+      end
+
       if dureeS == ""
         dureeS = 0
       else
         dureeS = Integer(dureeS)
       end
-      dureeM = Integer(dureeM)
-      dureeS = Integer(dureeS)
       if dureeH<0 || dureeH> 24 || dureeM <0 || dureeM >= 60 || dureeS <0 || dureeS >= 60
         redirect '/run/add', :error =>  "Durée incorrecte, merci de respecter le format heure, minutes, secondes"
       end

@@ -476,6 +476,15 @@ strong {
   padding-bottom: 10px;
 }
 
+.summary table.big {
+	width:700px;
+  height: 50px;
+	border:1px solid #519600;
+  background:#B5F36D;
+
+
+}
+
 .summary table {
 	width:650px;
   height: 50px;

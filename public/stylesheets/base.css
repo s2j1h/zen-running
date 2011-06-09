@@ -59,21 +59,37 @@ p {
 } 
  
 /* Liens */ 
- h2 a:link,p a:link {
+h2 a:link {
 	color:#7CE700;
 	text-decoration:none;
 	border-bottom:1px dotted #7CE700;
 	}	
-h2 a:visited,p a:visited {
+h2 a:visited {
 	color:#7CE700;
   border-bottom:1px dotted #7CE700;
 	text-decoration:none;
 	}		
-h2 a:hover,p a:hover,
-h2 a:focus,p a:focus {
+h2 a:hover,h2 a:focus {
 	color:#fff;
 	background-color: #7CE700;
   border:1px dotted #7CE700;
+	text-decoration:none;
+	}
+
+p a:link {
+	color:#7CE700;
+	text-decoration:none;
+	border-bottom:1px dotted #7CE700;
+	}	
+p a:visited {
+	color:#7CE700;
+  border-bottom:1px dotted #7CE700;
+	text-decoration:none;
+	}		
+p a:hover, p
+ a:focus {
+	color:#fff;
+	background-color: #7CE700;
 	text-decoration:none;
 	}
 
@@ -179,7 +195,15 @@ strong {
   font-style: normal; 
   font-size: 2.8em;
   vertical-align: middle;
-  margin-right: 30px;
+  margin-right: 144px;
+
+}
+
+#title-p-friends { 
+  font-weight: bold; /* Valeur par défaut. (6) */ 
+  font-style: normal; 
+  font-size: 2.8em;
+  vertical-align: middle;
 
 }
 
@@ -396,7 +420,7 @@ strong {
 .pagination {
   border: 0;
   padding: 0;
-  width:580px;
+  width:700px;
 
 }
 
@@ -447,32 +471,34 @@ strong {
   line-height: 1.1em;
 }
 
-#summary {
+.summary {
   margin-bottom: 5px;
   padding-bottom: 10px;
 }
 
-#summary table {
-	width:500px;
+.summary table {
+	width:650px;
   height: 50px;
 	border:1px solid #519600;
   background:#B5F36D;
 
 
 }
-#summary td {
+
+
+.summary td {
 	text-align:center;
   line-height: 0.8em;
   padding: 0;
   margin: 0;
   font:normal 0.9em 'Quattrocento Sans',Arial,Helvetica,sans-serif;
 	}
-#summary span {
+.summary span {
   font:normal 2.3em 'Quattrocento Sans',Arial,Helvetica,sans-serif;
   line-height: 0.9em;
   padding: 0;
 }
-#summary span.tip {
+.summary span.tip {
   font:bold 1.0em 'Quattrocento Sans',Arial,Helvetica,sans-serif;
   
 }

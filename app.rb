@@ -395,7 +395,7 @@ get '/oauth' do
     begin
       access_token = oauth.get_access_token(params[:code], {:ca_file => "/usr/lib/ssl/certs/ca-certificates.crt"})
       session[:facebook_access_token] = access_token
-      flash[:notice] = "Vous êtes connecté sur Zen-runnin', bienvenue !"
+      flash[:notice] = "Vous êtes connecté sur ZenRunnin', bienvenue !"
       puts "OK/JR: I'm IN"
     rescue Koala::Facebook::APIError => bang
       puts "ERROR/JR: impossible de se connecter à facebook: #{bang}"

@@ -9,7 +9,7 @@
   - if @runs.any?
     - @runs.each do |run|
       - dureeH,dureeM,dureeS = format_toDuree(run.duree)
-      #summary
+      .summary
         .the_date
           .date_m #{moisFR(run.date.month) }
           .date_d #{run.date.day}

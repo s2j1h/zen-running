@@ -20,8 +20,8 @@
               %td{:width=>"27%"} Distance
               %td{:width=>"37%"} Commentaires
               %td{:width=>"3%"} 
-                %span{:style=>"font-size:1.6em;font-weight:bold",:id=>run.id} 
-                  %a{:href=>"/run/delete/#{run.id}"} &#215;
+                %span{:style=>"font-size:1.6em;font-weight:bold",:id=>run.id, :class=>"delete_item"} 
+                  %a{:href=>"/run/delete/#{run.id}", :onclick=>"return confirm('Souhaitez vous supprimer cette course ? \\n\\nToutes les données seront perdues et la publication dans facebook effacée !');"} &#215;
           %tbody
             %td
               %span #{dureeH}
@@ -76,13 +76,13 @@
   // Create the tooltips only on document load
   $(document).ready(function()
   {
-    // Notice the use of the each() method to acquire access to each elements attributes
+    //Tip pour les commentaires
     $('span.tip').each(function()
     {
       $(this).qtip({
         content: $(this).attr('tooltip'), // Use the tooltip attribute of the element for the content
         style: {
-        name: 'cream',
+        name: 'dark',
         padding: '7px 13px',
         width: {
           max: 300,
@@ -92,5 +92,22 @@
       }
       });
    });
+    //tip pour effacer un post
+    $('.delete_item').each(function()
+    {
+      $(this).qtip({
+        content: "Supprimer la course",
+        style: {
+        name: 'dark',
+        padding: '7px 13px',
+        width: {
+          max: 300,
+          min: 0
+        },
+        tip: true
+      }
+      });
+   });
+
   });
 

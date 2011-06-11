@@ -192,9 +192,7 @@ get '/pages/:offset' do
   if logged_in?
     id_user = facebook_graph(:get_object, 'me')['id']
     @runs = Run.all(:id_user => id_user, :limit => settings.offset, :offset => @offset*settings.offset, :order => [ :date.desc ])
-    puts "#{settings.offset} offst=#{@offset*settings.offset}"
     @runs.each do |run|
-      puts "BEFORE: #{run.id} #{run.date} #{run.distance} comment= #{run.commentaires}"
     end
     if Run.all(:id_user => id_user).count < (@offset+1)*settings.offset+1
       @end = "True"
@@ -397,11 +395,35 @@ post '/run/add' do
   end
 
 end
-
+  
+get '/run/delete/:id' do
+  if logged_in?
+    if params[:id]
+      puts "DEBUG/JR params #{params[:id]}"
+      id_user = facebook_graph(:get_object, 'me')['id']
+      run = Run.first(:id_user => id_user,:id=>params[:id])
+      if run
+        id_post = run.id_post
+        if run.destroy
+          facebook_graph(:delete_object, id_post)
+          redirect '/', :notice => "La course a été supprimée avec succès"
+        else
+          puts run.errors.inspect
+          redirect '/', :error => "Une erreur a empêché la suppression de la course - merci de contacter votre admin préféré"
+        end
+      else
+        redirect '/', :error => "Course introuvable - merci de contacter votre admin préféré"
+      end
+    else
+      redirect '/', :error => "Une erreur a empêché la suppression de la course - merci de contacter votre admin préféré"
+    end
+  else
+    redirect '/'
+  end
+end
 
 get '/oauth' do
   if params[:code]
-    puts params[:code]
     begin
       access_token = oauth.get_access_token(params[:code], {:ca_file => "/usr/lib/ssl/certs/ca-certificates.crt"})
       session[:facebook_access_token] = access_token

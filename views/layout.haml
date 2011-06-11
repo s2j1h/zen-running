@@ -2,6 +2,10 @@
 %html( lang="en" )
   %head
     %meta( charset="utf-8")
+    %meta{:name => "Description", :content=>"Zenrunnin’: suit et partage vos séances de jogging via facebook" }
+    %meta{:name => "Keywords", :content=>"facebook, running, sport, jogging, ruby, sinatra" }
+    %meta{:name => "Author", :content=>"Zeneffy Labs, Julien Raigneau" }
+    %meta{:name => "Category", :content=>"sport,running" }
     %title ZenRunnin'
     %link( href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css" )
     %link( href="http://fonts.googleapis.com/css?family=Quattrocento+Sans" rel="stylesheet" type="text/css" )
@@ -43,9 +47,14 @@
 
     #footer
       %p
-        ZenRunning' est forgé par 
+        Une anomalie, une idée d'évolution ou l'envie de donner votre avis? rendez vous sur 
+        %img{:src=>"/images/fb_light_small_short.gif", :align=>"ABSMIDDLE"}
+        #{link_to("Facebook","http://www.facebook.com/apps/application.php?id=216410101715370")}
+      %p
+        #{link_to("ZenRunnin'","http://zenrunn.in")} est forgé par 
         %a(href='http://labs.zeneffy.fr')Zeneffy Labs.
         Copyright &copy;2011 J.Raigneau. Tous droits réservés. 
+
     #fb-root
 :javascript
   window.fbAsyncInit = function() {
@@ -60,6 +69,9 @@
     }()
     );
 
+  
+
+:javascript
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-12194039-6']);
   _gaq.push(['_trackPageview']);
@@ -69,4 +81,5 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
+
 
